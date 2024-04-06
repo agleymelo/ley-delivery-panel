@@ -1,10 +1,39 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Label } from '@radix-ui/react-label'
 import { Helmet } from 'react-helmet-async'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
+const signInFormSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+})
+
+type SingInForm = z.infer<typeof signInFormSchema>
+
 export function SignIn() {
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<SingInForm>({
+    resolver: zodResolver(signInFormSchema),
+  })
+
+  async function handleSignIn(data: SingInForm) {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
+      toast.success('Login realizado com sucesso!')
+    } catch (err) {
+      toast.error('Credenciais inválidas!')
+    }
+  }
+
   return (
     <>
       <Helmet title="Login" />
@@ -19,18 +48,28 @@ export function SignIn() {
             </p>
           </div>
 
-          <form className="space-y-4 ">
+          <form className="space-y-4" onSubmit={handleSubmit(handleSignIn)}>
             <div className="space-y-2">
               <Label htmlFor="email">Seu e-mail</Label>
-              <Input id="email" type="email" placeholder="seu@email.com" />
+              <Input
+                id="email"
+                type="email"
+                placeholder="seu@email.com"
+                {...register('email')}
+              />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password">Senha</Label>
-              <Input id="password" type="password" placeholder="******" />
+              <Input
+                id="password"
+                type="password"
+                placeholder="******"
+                {...register('password')}
+              />
             </div>
 
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
               Acessar painel
             </Button>
           </form>
