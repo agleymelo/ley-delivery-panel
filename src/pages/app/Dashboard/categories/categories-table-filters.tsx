@@ -10,24 +10,22 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-export function OrderTableFilters() {
+export function CategoriesTableFilter() {
   return (
     <form className="flex items-center gap-2">
       <span className="text-sm font-semibold">Filtros:</span>
-      <Input placeholder="ID do pedido" className="h-8 w-[320px]" />
-      <Input placeholder="nome do client" className="h-8 w-[320px]" />
+      <Input placeholder="ID da categoria" className="h-8 w-[320px]" />
+      <Input placeholder="Nome da categoria" className="h-8 w-[320px]" />
 
       <Select defaultValue="all">
         <SelectTrigger className="h-8 w-[180px]">
           <SelectValue />
         </SelectTrigger>
+
         <SelectContent>
-          <SelectItem value="all">Todos Status</SelectItem>
-          <SelectItem value="pending">Pendente</SelectItem>
-          <SelectItem value="canceled">Cancelado</SelectItem>
-          <SelectItem value="processing">Em Preparo</SelectItem>
-          <SelectItem value="delivering">Em Entrega</SelectItem>
-          <SelectItem value="delivered">Entregue</SelectItem>
+          <SelectItem value="all">Todos</SelectItem>
+          <SelectItem value="active">Ativado</SelectItem>
+          <SelectItem value="disabled">Desativado</SelectItem>
         </SelectContent>
       </Select>
 

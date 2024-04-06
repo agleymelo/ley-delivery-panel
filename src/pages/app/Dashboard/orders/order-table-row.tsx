@@ -16,7 +16,7 @@ export function OrderTableRow(props: OrderTableRowProps) {
           <DialogTrigger asChild>
             <Button variant="outline" size="xs">
               <Search className="h-3 w-3" />
-              <span className="sr-only">Detalhes da categoria</span>
+              <span className="sr-only">Detalhes do pedido</span>
             </Button>
           </DialogTrigger>
 
