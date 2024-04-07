@@ -1,5 +1,7 @@
 import { Building, ChevronDown, LogOut } from 'lucide-react'
 
+import { useUser } from '@/providers/user-provider'
+
 import { Button } from '../ui/button'
 import {
   DropdownMenu,
@@ -11,6 +13,8 @@ import {
 } from '../ui/dropdown-menu'
 
 export function AccountMenu() {
+  const { user } = useUser()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -25,9 +29,9 @@ export function AccountMenu() {
 
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel className="flex flex-col">
-          <span>Agleylson Melo</span>
+          <span>{user?.name ?? 'Carregando...'}</span>
           <span className="text-xs font-normal text-muted-foreground">
-            agley@leydelivery.com
+            {user?.email ?? 'Carregando...'}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

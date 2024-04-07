@@ -1,11 +1,4 @@
-import {
-  Box,
-  GlassWater,
-  Home,
-  PackageSearch,
-  UtensilsCrossed,
-} from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Box, GlassWater, Home, UtensilsCrossed } from 'lucide-react'
 
 import { AccountMenu } from '../AccountMenu'
 import { NavLink } from '../NavLink'

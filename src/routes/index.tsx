@@ -9,6 +9,8 @@ import { Orders } from '@/pages/app/orders/orders'
 import { Products } from '@/pages/app/products/products'
 import { SignIn } from '@/pages/auth/SignIn'
 
+import { PrivateRoute } from './private-route'
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -17,19 +19,25 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Dashboard />,
-      },
-      {
-        path: '/categories',
-        element: <Categories />,
-      },
-      {
-        path: '/products',
-        element: <Products />,
-      },
-      {
-        path: '/orders',
-        element: <Orders />,
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: '/',
+            element: <Dashboard />,
+          },
+          {
+            path: '/categories',
+            element: <Categories />,
+          },
+          {
+            path: '/products',
+            element: <Products />,
+          },
+          {
+            path: '/orders',
+            element: <Orders />,
+          },
+        ],
       },
     ],
   },

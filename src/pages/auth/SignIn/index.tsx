@@ -2,15 +2,17 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Label } from '@radix-ui/react-label'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useUser } from '@/providers/user-provider'
 
 const signInFormSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6),
+  password: z.string(),
 })
 
 type SingInForm = z.infer<typeof signInFormSchema>
@@ -24,13 +26,17 @@ export function SignIn() {
     resolver: zodResolver(signInFormSchema),
   })
 
-  async function handleSignIn(data: SingInForm) {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+  const navigate = useNavigate()
 
-      toast.success('Login realizado com sucesso!')
+  const { signIn } = useUser()
+
+  async function handleSignIn({ email, password }: SingInForm) {
+    try {
+      await signIn({ email, password })
+
+      navigate('/')
     } catch (err) {
-      toast.error('Credenciais inválidas!')
+      toast.error('Erro ao realizar login!')
     }
   }
 

@@ -1,6 +1,8 @@
+import { Plus } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 
 import { Pagination } from '@/components/Pagination'
+import { Button } from '@/components/ui/button'
 import {
   Table,
   TableBody,
@@ -21,7 +23,14 @@ export function Categories() {
         <h1 className="text-3xl font-bold tracking-tight">Categorias</h1>
 
         <div className="space-y-2.5">
-          <CategoriesTableFilter />
+          <div className="flex items-center justify-between">
+            <CategoriesTableFilter />
+
+            <Button type="button" variant="outline" size="xs" className="">
+              <Plus className="h-4 w-4 " />
+              Nova categoria
+            </Button>
+          </div>
 
           <div className="rounded-md border">
             <Table>
