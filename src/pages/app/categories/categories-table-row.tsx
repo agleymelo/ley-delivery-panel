@@ -1,28 +1,41 @@
 import { Search } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
+import { CategoryStatus } from '@/components/CategoryStatus.tsx'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-export function CategoriesTableRow() {
+type CategoriesTableRowProps = {
+  category: {
+    id: string
+    name: string
+    status: 'active' | 'inactive'
+  }
+}
+
+export function CategoriesTableRow({ category }: CategoriesTableRowProps) {
+  const navigate = useNavigate()
+
   return (
     <TableRow>
       <TableCell>
-        <Button variant="outline" size="xs">
+        <Button
+          variant="outline"
+          size="xs"
+          onClick={() => navigate(`/category/${category.id}`)}
+        >
           <Search className="h-3 w-3" />
           <span className="sr-only">Detalhes da categoria</span>
         </Button>
       </TableCell>
       <TableCell className="font-mono text-xs font-medium">
-        cluneq6c5000008l94tma83x8
+        {category.id}
       </TableCell>
-      <TableCell className="font-medium">Cafés</TableCell>
+      <TableCell className="font-medium">{category.name}</TableCell>
       <TableCell>
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-slate-400"></span>
-          <span className="font-medium text-muted-foreground">Pendente</span>
-        </div>
+        <CategoryStatus status={category.status} />
       </TableCell>
-      <TableCell>07</TableCell>
+      <TableCell>Em breve</TableCell>
     </TableRow>
   )
 }

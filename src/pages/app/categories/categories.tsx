@@ -1,6 +1,10 @@
+import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { z } from 'zod'
 
+import { getCategories } from '@/api/categories/get-categories'
 import { Pagination } from '@/components/Pagination'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,6 +19,37 @@ import { CategoriesTableFilter } from './categories-table-filters'
 import { CategoriesTableRow } from './categories-table-row'
 
 export function Categories() {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+
+  const categoryId = searchParams.get('categoryId')
+  const name = searchParams.get('name')
+  const status = searchParams.get('status')
+
+  const pageIndex = z.coerce
+    .number()
+    .transform((page) => page - 1)
+    .parse(searchParams.get('page') ?? '1')
+
+  const { data: results } = useQuery({
+    queryKey: ['categories', pageIndex, categoryId, name, status],
+    queryFn: () =>
+      getCategories({
+        pageIndex,
+        categoryId,
+        name,
+        status: status === 'all' ? null : status,
+      }),
+  })
+
+  function handlePaginate(pageIndex: number) {
+    setSearchParams((prevState) => {
+      prevState.set('page', (pageIndex + 1).toString())
+
+      return prevState
+    })
+  }
+
   return (
     <>
       <Helmet title="Categorias" />
@@ -26,7 +61,12 @@ export function Categories() {
           <div className="flex items-center justify-between">
             <CategoriesTableFilter />
 
-            <Button type="button" variant="outline" size="xs" className="">
+            <Button
+              type="button"
+              variant="outline"
+              size="xs"
+              onClick={() => navigate('/category/create')}
+            >
               <Plus className="h-4 w-4 " />
               Nova categoria
             </Button>
@@ -47,14 +87,22 @@ export function Categories() {
               </TableHeader>
 
               <TableBody>
-                {Array.from({ length: 12 }).map((_, index) => {
-                  return <CategoriesTableRow key={index} />
-                })}
+                {results &&
+                  results.categories.map((category) => (
+                    <CategoriesTableRow key={category.id} category={category} />
+                  ))}
               </TableBody>
             </Table>
           </div>
 
-          <Pagination pageIndex={0} totalCount={105} perPage={10} />
+          {results && (
+            <Pagination
+              pageIndex={results.meta.pageIndex}
+              totalCount={results.meta.totalCount}
+              perPage={results.meta.perPage}
+              onPageChange={handlePaginate}
+            />
+          )}
         </div>
       </div>
     </>

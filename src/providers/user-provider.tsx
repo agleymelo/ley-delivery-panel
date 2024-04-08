@@ -26,17 +26,12 @@ type User = {
   role: string
 }
 
-type UserData = {
-  user: User
-  token: string
-}
-
 type UserContextProps = {
   user: User | null
   userToken: string | undefined
   signIn: (data: SignInInput) => Promise<void>
-  setData(data: UserData): void
   signed: boolean
+  isLoadingProfile: boolean
 }
 
 const UserContext = createContext<UserContextProps>({} as UserContextProps)
@@ -47,16 +42,12 @@ type UserProviderProps = {
 
 export function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   const { mutateAsync: authenticate } = useMutation({
     mutationFn: SignInUser,
   })
-
   const userToken = Cookies.get('lay-delivery-panel:token')
-
-  async function setData(data: UserData) {
-    setUser(data)
-  }
 
   async function signIn({ email, password }: SignInInput): Promise<void> {
     try {
@@ -97,6 +88,7 @@ export function UserProvider({ children }: UserProviderProps) {
 
       getProfile()
         .then((data) => {
+          setIsLoading(false)
           setUser(data.user)
         })
         .catch((err) => {
@@ -106,6 +98,13 @@ export function UserProvider({ children }: UserProviderProps) {
             Cookies.remove('lay-delivery-panel:token')
           }
         })
+        .finally(() => {
+          setIsLoading(false)
+        })
+    }
+
+    if (!token) {
+      setIsLoading(false)
     }
   }, [])
 
@@ -114,9 +113,9 @@ export function UserProvider({ children }: UserProviderProps) {
       value={{
         signIn,
         user,
-        setData,
         userToken,
         signed: !!user,
+        isLoadingProfile: isLoading,
       }}
     >
       {children}

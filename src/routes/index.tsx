@@ -4,6 +4,8 @@ import { AppLayout } from '@/pages/_layouts/App'
 import { AuthLayout } from '@/pages/_layouts/Auth'
 import { NotFound } from '@/pages/404'
 import { Categories } from '@/pages/app/categories/categories'
+import { ShowCategory } from '@/pages/app/categories/category-id/category'
+import { CreateCategory } from '@/pages/app/categories/create'
 import { Dashboard } from '@/pages/app/dashboard'
 import { Orders } from '@/pages/app/orders/orders'
 import { Products } from '@/pages/app/products/products'
@@ -14,12 +16,12 @@ import { PrivateRoute } from './private-route'
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <AppLayout />,
-    errorElement: <NotFound />,
+    element: <PrivateRoute />,
     children: [
       {
         path: '/',
-        element: <PrivateRoute />,
+        element: <AppLayout />,
+        errorElement: <NotFound />,
         children: [
           {
             path: '/',
@@ -28,6 +30,14 @@ export const router = createBrowserRouter([
           {
             path: '/categories',
             element: <Categories />,
+          },
+          {
+            path: '/category/:categoryId',
+            element: <ShowCategory />,
+          },
+          {
+            path: '/category/create',
+            element: <CreateCategory />,
           },
           {
             path: '/products',
