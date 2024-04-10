@@ -1,28 +1,49 @@
 import { Search } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-export function ProductTableRow() {
+import { ProductStatus } from './product-status'
+
+type ProductTableRowProps = {
+  product: {
+    id: string
+    name: string
+    description?: string
+    priceInCents: number
+    images: string[]
+  }
+}
+
+export function ProductTableRow({ product }: ProductTableRowProps) {
+  const navigate = useNavigate()
+
   return (
     <TableRow>
       <TableCell>
-        <Button variant="outline" size="xs">
+        <Button
+          variant="outline"
+          size="xs"
+          onClick={() => navigate(`/products/${product.id}`)}
+        >
           <Search className="h-3 w-3" />
           <span className="sr-only">Detalhes do produto</span>
         </Button>
       </TableCell>
       <TableCell className="font-mono text-xs font-medium">
-        cluneq6c5000008l94tma83x8
+        {product.id}
       </TableCell>
-      <TableCell className="font-medium">Café Gelado</TableCell>
-      <TableCell>Café expresso gelado com leite desnatado.</TableCell>
-      <TableCell className="font-medium">R$ 109,90</TableCell>
+      <TableCell className="font-medium">{product.name}</TableCell>
+      <TableCell>{product.description}</TableCell>
+      <TableCell className="font-medium">
+        {Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }).format(product.priceInCents / 100)}
+      </TableCell>
       <TableCell>
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-slate-400"></span>
-          <span className="font-medium text-muted-foreground">Ativo</span>
-        </div>
+        <ProductStatus status="active" />
       </TableCell>
     </TableRow>
   )

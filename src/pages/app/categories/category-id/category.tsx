@@ -201,16 +201,16 @@ export function ShowCategory() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-16 p-8">
+              <div className="flex items-center justify-end gap-4 p-4">
                 <Button
                   type="button"
-                  className="w-full"
                   variant="destructive"
+                  className="px-8 py-4"
                   onClick={() => handleDeleteCategory()}
                 >
                   Excluir
                 </Button>
-                <Button type="submit" className="w-full" variant="default">
+                <Button type="submit" variant="default" className="px-8 py-4">
                   Salvar
                 </Button>
               </div>

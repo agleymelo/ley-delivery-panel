@@ -8,6 +8,8 @@ import { ShowCategory } from '@/pages/app/categories/category-id/category'
 import { CreateCategory } from '@/pages/app/categories/create'
 import { Dashboard } from '@/pages/app/dashboard'
 import { Orders } from '@/pages/app/orders/orders'
+import { CreateProduct } from '@/pages/app/products/create'
+import { ShowProduct } from '@/pages/app/products/product-id/product'
 import { Products } from '@/pages/app/products/products'
 import { SignIn } from '@/pages/auth/SignIn'
 
@@ -42,6 +44,14 @@ export const router = createBrowserRouter([
           {
             path: '/products',
             element: <Products />,
+          },
+          {
+            path: '/products/:productId',
+            element: <ShowProduct />,
+          },
+          {
+            path: '/products/create',
+            element: <CreateProduct />,
           },
           {
             path: '/orders',
