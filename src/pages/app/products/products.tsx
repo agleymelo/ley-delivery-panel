@@ -94,7 +94,7 @@ export function Products() {
           {results && (
             <Pagination
               pageIndex={results.meta.pageIndex}
-              totalCount={results.meta.totalCount}
+              totalCount={results.meta.total}
               perPage={results.meta.perPage}
               onPageChange={handlePaginate}
             />

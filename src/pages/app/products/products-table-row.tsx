@@ -37,10 +37,10 @@ export function ProductTableRow({ product }: ProductTableRowProps) {
       <TableCell className="font-medium">{product.name}</TableCell>
       <TableCell>{product.description}</TableCell>
       <TableCell className="font-medium">
-        {Intl.NumberFormat('pt-BR', {
+        {(product.priceInCents / 100).toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
-        }).format(product.priceInCents / 100)}
+        })}
       </TableCell>
       <TableCell>
         <ProductStatus status="active" />

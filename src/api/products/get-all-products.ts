@@ -11,7 +11,7 @@ interface GetAllProductsReply {
   meta: {
     pageIndex: number
     perPage: number
-    totalCount: number
+    total: number
   }
 }
 
