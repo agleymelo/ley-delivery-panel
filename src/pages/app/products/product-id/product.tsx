@@ -66,7 +66,7 @@ export function ShowProduct() {
     },
   })
 
-  const [imagem, setImagem] = useState('')
+  const [imagem, setImagem] = useState('https://via.placeholder.com/1024')
   const [imagemFile, setImagemFile] = useState<File | null>(null)
 
   async function handleUpdateProduct(data: UpdateProductSchema) {
@@ -151,7 +151,12 @@ export function ShowProduct() {
         priceInCents: data.priceInCents,
       })
 
-      setImagem(`${api.defaults.baseURL}/public/${data.images[0]}`)
+      if (!data?.images) {
+        setImagem(' https://via.placeholder.com/1024')
+        return
+      }
+
+      setImagem(data?.images[0])
 
       toast.success('Produto carregado com sucesso!')
 

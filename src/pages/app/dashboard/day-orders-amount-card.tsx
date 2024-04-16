@@ -20,7 +20,9 @@ export function DayOrdersAmountCard() {
         {dayOrdersAmount && (
           <>
             <span className="text-2xl font-bold tracking-tight">
-              {dayOrdersAmount.amount.toLocaleString('pt-BR')}
+              {isNaN(dayOrdersAmount.amount)
+                ? 0
+                : dayOrdersAmount.amount.toLocaleString('pt-BR')}
             </span>
             <p className="text-xs text-muted-foreground">
               {dayOrdersAmount.diffFromYesterday >= 0 ? (
