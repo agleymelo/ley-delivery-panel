@@ -54,22 +54,22 @@ export function UserProvider({ children }: UserProviderProps) {
     try {
       const result = await authenticate({ email, password })
 
-      const { data } = result
+      const { user, token } = result
 
-      if (data?.user?.role !== 'admin') {
+      if (user?.role !== 'admin') {
         toast.error('Você não tem permissão para acessar o painel!')
         return
       }
 
-      api.defaults.headers.common.Authorization = `Bearer ${data.token}`
+      api.defaults.headers.common.Authorization = `Bearer ${token}`
 
-      Cookies.set('lay-delivery-panel:token', data.token, {
+      Cookies.set('lay-delivery-panel:token', token, {
         expires: 1000 * 60 * 60 * 24 * 1,
         path: '/',
         secure: true,
       })
 
-      setUser(data.user)
+      setUser(user)
 
       toast.success('Login realizado com sucesso!')
     } catch (err) {

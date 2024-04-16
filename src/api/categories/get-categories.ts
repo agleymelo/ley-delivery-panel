@@ -4,7 +4,7 @@ interface GetCategoriesReply {
   categories: Array<{
     id: string
     name: string
-    status: string | 'active' | 'inactive'
+    status: 'active' | 'inactive'
     created_at: Date
   }>
   meta: {
@@ -18,7 +18,7 @@ export interface GetCategoriesQuery {
   pageIndex?: number | null
   categoryId?: string | null
   name?: string | null
-  status?: string | 'active' | 'inactive'
+  status?: string | 'active' | 'inactive' | null
 }
 
 export async function getCategories({
