@@ -2,19 +2,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { ArrowLeft, Upload } from 'lucide-react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Controller, useForm } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { getCategories } from '@/api/categories/get-categories'
 import { crateProduct } from '@/api/products/create-product'
-import { deleteProduct } from '@/api/products/delete-product'
-import { showProduct } from '@/api/products/show-product'
 import { updatePhotoProduct } from '@/api/products/update-photo-product'
-import { updateProduct } from '@/api/products/update-product'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -26,7 +23,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { api } from '@/lib/axios'
 
 const createProductSchema = z.object({
   name: z.string(),
@@ -66,8 +62,8 @@ export function CreateProduct() {
     mutationFn: crateProduct,
   })
 
-  const [imagem, setImagem] = useState('')
-  const [imagemFile, setImagemFile] = useState<File | null>(null)
+  const [image, setImage] = useState('')
+  const [imageFile, setImageFile] = useState<File | null>(null)
 
   async function handleCreateProduct(data: CreateProductSchema) {
     try {
@@ -78,10 +74,10 @@ export function CreateProduct() {
         categoryId: data.categoryId,
       })
 
-      if (imagemFile) {
+      if (imageFile) {
         const formData = new FormData()
 
-        formData.append('photo', imagemFile)
+        formData.append('photo', imageFile)
 
         await UpdatePhotoProduct({ id, formData })
       }
@@ -114,10 +110,10 @@ export function CreateProduct() {
       return
     }
 
-    setImagemFile(file)
+    setImageFile(file)
 
     const imagePreview = URL.createObjectURL(file)
-    setImagem(imagePreview)
+    setImage(imagePreview)
   }
 
   return (
@@ -145,19 +141,11 @@ export function CreateProduct() {
             onSubmit={handleSubmit(handleCreateProduct)}
           >
             <div className="mt-4">
-              {!imagem ? (
-                <img
-                  src="https://via.placeholder.com/1024"
-                  alt=""
-                  className="h-96  w-full rounded-md object-cover"
-                />
-              ) : (
-                <img
-                  src={imagem}
-                  alt=""
-                  className="h-96  w-full rounded-md object-cover"
-                />
-              )}
+              <img
+                src={image ?? 'https://via.placeholder.com/1024'}
+                alt=""
+                className="h-[512px] w-[512px] rounded-md object-cover object-center"
+              />
 
               <div className="mt-8">
                 <Label

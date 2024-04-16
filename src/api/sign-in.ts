@@ -17,10 +17,10 @@ interface SignInReply {
 }
 
 export async function SignInUser({ email, password }: SignInBody) {
-  const response = await api.post('/users/sessions', {
+  const response = await api.post<SignInReply>('/users/sessions', {
     email,
     password,
   })
 
-  return response
+  return response.data
 }

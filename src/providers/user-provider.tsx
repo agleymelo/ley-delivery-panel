@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import Cookies from 'js-cookie'
 import {
   createContext,
@@ -71,11 +72,12 @@ export function UserProvider({ children }: UserProviderProps) {
       setUser(data.user)
 
       toast.success('Login realizado com sucesso!')
-    } catch (err: any) {
-      if (err.response.data?.message) {
-        toast.error(err.response.data.message)
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
+          toast.error('Usuário ou senha inválidos!')
+        }
       }
-
       toast.error('Erro ao realizar login!')
     }
   }

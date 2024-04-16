@@ -17,7 +17,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { api } from '@/lib/axios'
 
 const updateProductSchema = z.object({
   productId: z.string(),
@@ -66,14 +65,14 @@ export function ShowProduct() {
     },
   })
 
-  const [imagem, setImagem] = useState('https://via.placeholder.com/1024')
-  const [imagemFile, setImagemFile] = useState<File | null>(null)
+  const [image, setImage] = useState('https://via.placeholder.com/1024')
+  const [imageFile, setImageFile] = useState<File | null>(null)
 
   async function handleUpdateProduct(data: UpdateProductSchema) {
     try {
-      if (imagemFile) {
+      if (imageFile) {
         const formData = new FormData()
-        formData.append('photo', imagemFile)
+        formData.append('photo', imageFile)
 
         await UpdatePhotoProduct({ id: data.productId, formData })
       }
@@ -136,10 +135,10 @@ export function ShowProduct() {
       return
     }
 
-    setImagemFile(file)
+    setImageFile(file)
 
     const imagePreview = URL.createObjectURL(file)
-    setImagem(imagePreview)
+    setImage(imagePreview)
   }
 
   useEffect(() => {
@@ -151,12 +150,12 @@ export function ShowProduct() {
         priceInCents: data.priceInCents,
       })
 
-      if (!data?.images) {
-        setImagem(' https://via.placeholder.com/1024')
+      if (!data?.image) {
+        setImage(' https://via.placeholder.com/1024')
         return
       }
 
-      setImagem(data?.images[0])
+      setImage(data?.image)
 
       toast.success('Produto carregado com sucesso!')
 
@@ -190,20 +189,12 @@ export function ShowProduct() {
             className="grid grid-cols-2 gap-4 rounded-md border px-8 py-4"
             onSubmit={handleSubmit(handleUpdateProduct)}
           >
-            <div className="mt-4">
-              {!imagem ? (
-                <img
-                  src="https://via.placeholder.com/1024"
-                  alt={data?.name}
-                  className="h-96  w-full rounded-md object-cover"
-                />
-              ) : (
-                <img
-                  src={imagem}
-                  alt={data?.name}
-                  className="h-96  w-full rounded-md object-cover"
-                />
-              )}
+            <div className="mt-4 flex flex-col items-center">
+              <img
+                src={data?.image ?? image}
+                alt={data?.name}
+                className="h-[512px] w-[512px] rounded-md object-cover object-center"
+              />
 
               <div className="mt-8">
                 <Label

@@ -9,7 +9,6 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { createCategory } from '@/api/categories/create-category'
-import { deleteCategory } from '@/api/categories/delete-category'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'

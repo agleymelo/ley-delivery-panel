@@ -6,7 +6,7 @@ interface ShowProductReply {
     name: string
     description?: string
     priceInCents: number
-    images: string[]
+    image: string
   }
 }
 

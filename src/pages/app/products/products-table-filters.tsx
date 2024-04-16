@@ -23,8 +23,8 @@ export function ProductsTableFilters() {
   const { register, handleSubmit } = useForm<ProductsFilterSchema>({
     resolver: zodResolver(productsFiltersSchema),
     defaultValues: {
-      productId: '',
-      name: '',
+      productId: productId ?? '',
+      name: name ?? '',
     },
   })
 
